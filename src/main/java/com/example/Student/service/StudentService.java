@@ -1,5 +1,7 @@
 package com.example.Student.service;
 
+
+import com.example.Student.model.Department;
 import com.example.Student.model.Student;
 import com.example.Student.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class StudentService {
     }
 
 
-    public Optional<Student> getStudentById(Long id) {
+    public Optional<Student> getStudentById(int id) {
         return studentRepository.findById(id);
     }
 
@@ -37,7 +39,19 @@ public class StudentService {
     }
 
 
-    public void removeStudentById(long id) {
+    public void removeStudentById(int id) {
         studentRepository.deleteById(id);
+    }
+
+    public List<Student> findByUserName(String userName) {
+        return studentRepository.findByUserName(userName);
+    }
+
+    public List<Student> getByDepartment(Department department) {
+        return studentRepository.getByDepartment(department);
+    }
+
+    public List<Student> findByFirstNameAndDepartment(String firstName, Department department) {
+        return studentRepository.findByFirstNameAndDepartment(firstName,department);
     }
 }

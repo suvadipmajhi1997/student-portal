@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long studentId;
+    private int studentId;
 
     @NotBlank
     @Size(min = 2, max = 50)
@@ -25,6 +25,11 @@ public class Student {
     @NotBlank
     @Size(min = 2, max = 50)
     private String lastName;
+
+    @NotBlank
+    @Size(min=5,max = 50)
+    @Pattern(regexp ="^[a-zA-Z0-9_]")
+    private String userName;
 
     @NotBlank
     private String rollNo;
@@ -55,4 +60,5 @@ public class Student {
 
     @Enumerated(EnumType.STRING)
     private Department department;
+
 }

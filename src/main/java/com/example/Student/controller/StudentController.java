@@ -1,5 +1,6 @@
 package com.example.Student.controller;
 
+import com.example.Student.model.Department;
 import com.example.Student.model.Student;
 import com.example.Student.service.StudentService;
 import jakarta.validation.Valid;
@@ -35,14 +36,14 @@ public class StudentController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Student> getStudentDetails(@PathVariable Long id) {
+    public ResponseEntity<Student> getStudentDetails(@PathVariable int id) {
         Optional<Student> student = (studentService.getStudentById(id));
         return student.map(value -> new ResponseEntity<>(value, HttpStatus.FOUND))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Student> updateDetails(@PathVariable long id, @RequestBody @Valid Student student) {
+    public ResponseEntity<Student> updateDetails(@PathVariable int id, @RequestBody @Valid Student student) {
         Optional<Student> existing = studentService.getStudentById(id);
         if (existing.isPresent()) {
             student.setStudentId(id);
@@ -53,7 +54,7 @@ public class StudentController {
     }
 
    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<Void> removeStudent(@PathVariable long id){
+    public ResponseEntity<Void> removeStudent(@PathVariable int id){
         Optional<Student>exitingStudent=studentService.getStudentById(id);
         if(exitingStudent.isPresent()){
             studentService.removeStudentById(id);
@@ -61,4 +62,20 @@ public class StudentController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
    }
+
+   //custom finder
+ @GetMapping(value = "/get/{userName}")
+    public List<Student>getStudentByUserName(@PathVariable String userName){
+        return studentService.findByUserName(userName);
+    }
+    @GetMapping(value = "list/{department}")
+    public List<Student> getStudent(@PathVariable Department department){
+        return studentService.getByDepartment(department);
+    }
+
+    @GetMapping(value = "/firstName/{firstName}/department/{department}")
+
+    public List<Student>getStudentByNameAndDepartment(@PathVariable String firstName, @PathVariable Department department){
+        return studentService.findByFirstNameAndDepartment(firstName,department);
+    }
 }
